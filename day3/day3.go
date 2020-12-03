@@ -1,4 +1,4 @@
-package week3
+package day3
 
 import (
 	"io/ioutil"
@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-func Run(startX int, startY int, slopeX int, slopeY int) (result int, err error) {
-	f, err := os.Open("week3/data/map.txt")
+func RunPart1(startX int, startY int, slopeX int, slopeY int) (result int, err error) {
+	f, err := os.Open("day3/data/map.txt")
 
 	if err == nil {
 		defer f.Close()
@@ -39,6 +39,23 @@ func Run(startX int, startY int, slopeX int, slopeY int) (result int, err error)
 
 					locX = locX + slopeX
 					locY = locY + slopeY
+				}
+			}
+		}
+	}
+
+	return result, err
+}
+
+func RunPart2() (result int64, err error) {
+	var i, j, k, l, m int
+	if i, err = RunPart1(0, 0, 1, 1); err == nil {
+		if j, err = RunPart1(0, 0, 3, 1); err == nil {
+			if k, err = RunPart1(0, 0, 5, 1); err == nil {
+				if l, err = RunPart1(0, 0, 7, 1); err == nil {
+					if m, err = RunPart1(0, 0, 1, 2); err == nil {
+						result = int64(i) * int64(j) * int64(k) * int64(l) * int64(m)
+					}
 				}
 			}
 		}
