@@ -5,6 +5,8 @@ import (
 	"github.com/vaporofnuance/adventofcode/day1"
 	"github.com/vaporofnuance/adventofcode/day2"
 	"github.com/vaporofnuance/adventofcode/day3"
+	"github.com/vaporofnuance/adventofcode/day4"
+	"github.com/vaporofnuance/adventofcode/day5"
 )
 
 func main() {
@@ -53,6 +55,38 @@ func main() {
 	result64, err = day3.RunPart2()
 	if err == nil {
 		fmt.Println(result64)
+	} else {
+		fmt.Println(err)
+	}
+
+	fmt.Print("day 4 part 1 = ")
+	result, err = day4.RunPart1(day4.HasRequiredFields)
+	if err == nil {
+		fmt.Println(result)
+	} else {
+		fmt.Println(err)
+	}
+
+	fmt.Print("day 4 part 2 = ")
+	result, err = day4.RunPart1(day4.HasValidData)
+	if err == nil {
+		fmt.Println(result)
+	} else {
+		fmt.Println(err)
+	}
+
+	fmt.Print("day 5 part 1 = ")
+	result, err = day5.Run()
+	if err == nil {
+		fmt.Println(result)
+	} else {
+		fmt.Println(err)
+	}
+
+	fmt.Print("day 5 part 2 = ")
+	result, err = day5.RunPart2()
+	if err == nil {
+		fmt.Println(result)
 	} else {
 		fmt.Println(err)
 	}
