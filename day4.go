@@ -1,8 +1,6 @@
-package day4
+package main
 
 import (
-	"io/ioutil"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -14,7 +12,7 @@ func hasKey(passport map[string]string, key string) bool {
 	return ok
 }
 
-func HasRequiredFields(passport map[string]string) bool {
+func hasRequiredFields(passport map[string]string) bool {
 	return hasKey(passport, "byr") &&
 		hasKey(passport, "iyr") &&
 		hasKey(passport, "eyr") &&
@@ -24,7 +22,7 @@ func HasRequiredFields(passport map[string]string) bool {
 		hasKey(passport, "pid")
 }
 
-func ValidField(key string, value string) bool {
+func validField(key string, value string) bool {
 	switch key {
 	case "byr":
 		byr, err := strconv.Atoi(value)
@@ -60,53 +58,51 @@ func ValidField(key string, value string) bool {
 		return false
 	}
 }
-func HasValidData(passport map[string]string) (result bool) {
-	result = HasRequiredFields(passport)
+func hasValidData(passport map[string]string) (result bool) {
+	result = hasRequiredFields(passport)
 
 	for k, v := range passport {
-		result = result && ValidField(k, v)
+		result = result && validField(k, v)
 	}
 
 	return result
 }
 
-func RunPart1(policy func (map[string]string) bool) (result int, err error) {
-	f, err := os.Open("day4/data/passports.txt")
+func calcDay4ByPolicy(lines []string, policy func (map[string]string) bool) (result int64, err error) {
+	passports := make([]map[string]string, 0)
 
-	if err == nil {
-		var data []byte
+	currentPassport := make(map[string]string, 0)
+	passports = append(passports, currentPassport)
 
-		if data, err = ioutil.ReadAll(f); err == nil {
-			lines := strings.Split(string(data), "\n")
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
 
-			passports := make([]map[string]string, 0)
-
-			currentPassport := make(map[string]string, 0)
+		if len(line) == 0 {
+			currentPassport = make(map[string]string, 0)
 			passports = append(passports, currentPassport)
+		} else {
+			for _, field := range strings.Split(line, " ") {
+				key := strings.Split(field, ":")[0]
+				value := strings.Split(field, ":")[1]
 
-			for _, line := range lines {
-				line = strings.TrimSpace(line)
-
-				if len(line) == 0 {
-					currentPassport = make(map[string]string, 0)
-					passports = append(passports, currentPassport)
-				} else {
-					for _, field := range strings.Split(line, " ") {
-						key := strings.Split(field, ":")[0]
-						value := strings.Split(field, ":")[1]
-
-						currentPassport[key] = value
-					}
-				}
-			}
-
-			for _, passport := range passports {
-				if policy(passport) {
-					result++
-				}
+				currentPassport[key] = value
 			}
 		}
 	}
 
+	for _, passport := range passports {
+		if policy(passport) {
+			result++
+		}
+	}
+
 	return result, err
+}
+
+func CalcDay4Part1(lines []string) (result int64, err error) {
+	return calcDay4ByPolicy(lines, hasRequiredFields)
+}
+
+func CalcDay4Part2(lines []string) (result int64, err error) {
+	return calcDay4ByPolicy(lines, hasValidData)
 }

@@ -2,109 +2,57 @@ package main
 
 import (
 	"fmt"
-	"github.com/vaporofnuance/adventofcode/day1"
-	"github.com/vaporofnuance/adventofcode/day2"
-	"github.com/vaporofnuance/adventofcode/day3"
-	"github.com/vaporofnuance/adventofcode/day4"
-	"github.com/vaporofnuance/adventofcode/day5"
-	"github.com/vaporofnuance/adventofcode/day6"
+	"io/ioutil"
+	"os"
+	"strings"
 )
 
+func RunCalc(day int, part int, filename string, calcFunc func ([]string) (int64, error)) {
+	fmt.Printf("day %d part %d = ", day, part)
+	f, err := os.Open(filename)
+
+	if err == nil {
+		var data []byte
+
+		if data, err = ioutil.ReadAll(f); err == nil {
+			lines := strings.Split(string(data), "\n")
+
+			var result int64
+
+			result, err = calcFunc(lines)
+
+			if err == nil {
+				fmt.Println(result)
+			} else {
+				fmt.Println(err)
+			}
+		} else {
+			fmt.Println(err)
+		}
+	} else {
+		fmt.Println(err)
+	}
+}
+
 func main() {
-	fmt.Print("day 1 part 1= ")
-	result, err := day1.RunPart1()
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(2, 1, "data/day1.txt", CalcDay1Part1)
+	RunCalc(2, 2, "data/day1.txt", CalcDay1Part2)
 
-	fmt.Print("day 1 part 2 = ")
-	result, err = day1.RunPart2()
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(2, 1, "data/day2.txt", CalcDay2Part1)
+	RunCalc(2, 2, "data/day2.txt", CalcDay2Part2)
 
-	fmt.Print("day 2 part 1 = ")
-	result, err = day2.Run(day2.NumberPolicy)
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(3, 1, "data/day3.txt", CalcDay3Part1)
+	RunCalc(3, 2, "data/day3.txt", CalcDay3Part2)
 
-	fmt.Print("day 2 part 2 = ")
-	result, err = day2.Run(day2.PositionPolicy)
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(4, 1, "data/day4.txt", CalcDay4Part1)
+	RunCalc(4, 2, "data/day4.txt", CalcDay4Part2)
 
-	fmt.Print("day 3 part 1 = ")
-	result, err = day3.RunPart1(0, 0, 3, 1)
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(5, 1, "data/day5.txt", CalcDay5Part1)
+	RunCalc(5, 2, "data/day5.txt", CalcDay5Part2)
 
-	var result64 int64
-	fmt.Print("day 3 part 2 = ")
-	result64, err = day3.RunPart2()
-	if err == nil {
-		fmt.Println(result64)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(6, 1, "data/day6.txt", CalcDay6Part1)
+	RunCalc(6, 2, "data/day6.txt", CalcDay6Part2)
 
-	fmt.Print("day 4 part 1 = ")
-	result, err = day4.RunPart1(day4.HasRequiredFields)
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
-
-	fmt.Print("day 4 part 2 = ")
-	result, err = day4.RunPart1(day4.HasValidData)
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
-
-	fmt.Print("day 5 part 1 = ")
-	result, err = day5.Run()
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
-
-	fmt.Print("day 5 part 2 = ")
-	result, err = day5.RunPart2()
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
-
-	fmt.Print("day 6 part 1 = ")
-	result, err = day6.RunPart1()
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
-
-	fmt.Print("day 6 part 2 = ")
-	result, err = day6.RunPart2()
-	if err == nil {
-		fmt.Println(result)
-	} else {
-		fmt.Println(err)
-	}
+	RunCalc(7, 1, "data/day7.txt", CalcDay7Part1)
+	RunCalc(7, 2, "data/day7.txt", CalcDay7Part2)
 }
